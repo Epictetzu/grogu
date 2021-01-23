@@ -1,5 +1,5 @@
 [package]
-name = "rust_trading_bot"
+name = "grogu"
 version = "0.1.0"
 authors = ["Epictetzu <scruffystoner@gmail.com>"]
 edition = "2018"

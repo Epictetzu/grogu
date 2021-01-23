@@ -5,16 +5,15 @@ fn get_keys(response: &serde_json::Value, firstkey: &str,mut  keysvec: Vec<(Stri
     let incomingjsonvalue: &serde_json::Value = &response.get(firstkey).unwrap();
     /*Copy the map out of the jsonValue "putexpdatemap" into empty map "holdingmap" 
     so we can use .keys() and .values() methods */
-    let holdingmap = incomingjsonvalue.as_object().unwrap().clone();
+    let datesmap = incomingjsonvalue.as_object().unwrap().clone();
     //Create a new empty vectors of strings to hold dates and strike keys
     let mut datesvec: Vec<&str> = Vec::new();
     
-
     //Iterate down in the map to get the keys
-    holdingmap.keys().for_each(|date|{
+    datesmap.keys().for_each(|date|{
         datesvec.push(&date);//Push keys for dates to vector holding dates  Right type for not returning the value
-        holdingmap[date].as_object().unwrap().keys().for_each(|strike| {
-            keysvec.push(( serde_json::to_string_pretty(&date).unwrap() ,  serde_json::to_string_pretty(&strike).unwrap())); //Convert to Strings to return them out of the fn.
+        datesmap[date].as_object().unwrap().keys().for_each(|strike| {
+            keysvec.push(((date.as_str().to_string()), (strike.as_str().to_string()))); //Get the keys...as strings...then convert to strings so the keys will not have extra "\" in them. Put that in your brain and smoke it.
         });
     });
     datesvec.iter().for_each(|x| println!("Dates: {:?}", x));//Debug print */                   
@@ -39,7 +38,7 @@ pub fn get_option_by_delta(client: &TDAClient, symbol: &str, strikes: u8, callpu
     ]
     );
     let firstkey: &str = "putExpDateMap";
-    let mut keysvec: Vec<(String, String)> = Vec::new();
+    let keysvec: Vec<(String, String)> = Vec::new();
     get_keys(jsonoptionchain, firstkey, keysvec);
     //append_delta_to_vector(jsonoptionchain, firstkey, keysvec);
     
