@@ -1,3 +1,4 @@
+
 use tdameritradeclient::{TDAClient,OptionChain};
 
 fn get_keys(response: &serde_json::Value, firstkey: &str, mut keysvec: Vec<(String, String)>) -> Vec<(String, String)>{ /*Gets unknown keys from down the hierarchy of the response json value*/
@@ -67,13 +68,19 @@ pub fn gather_options(client: &TDAClient, symbol: &str, strikes: u8, callput: &s
         OptionChain::FromDate(fromdate),
         OptionChain::ToDate(todate),
     ]));
-    
-
 }
-fn prettyprint(toprint: &serde_json::Value) {    
+pub fn prettyprint(toprint: &serde_json::Value) {    
     println!("{}\n", serde_json::to_string_pretty(toprint).unwrap());
 }
-fn titleprint(heading: &str) {
+pub fn titleprint(heading: &str) {
     println!("{}", heading.to_uppercase());
     println!("{}", "-".repeat(heading.len()));
+}
+pub fn is_open(client: &TDAClient, market: &str) -> bool{
+    let markethours: serde_json::Value = client.get_todays_market_hours(market);
+    chrono::FixedOffset::west(0);
+    return false;
+}
+fn get_eastern_time(){
+    //chrono::FixedOffset::west(5 * 3600).
 }
