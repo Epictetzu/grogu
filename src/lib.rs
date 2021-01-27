@@ -1,6 +1,6 @@
 
 use tdameritradeclient::{TDAClient,OptionChain};
-
+pub mod market_hours;
 fn get_keys(response: &serde_json::Value, firstkey: &str, mut keysvec: Vec<(String, String)>) -> Vec<(String, String)>{ /*Gets unknown keys from down the hierarchy of the response json value*/
     //use the first key ie; "putExpDateMap" to get the jsonValue down one level
     let incomingjsonvalue: &serde_json::Value = &response.get(firstkey).unwrap();
@@ -75,12 +75,4 @@ pub fn prettyprint(toprint: &serde_json::Value) {
 pub fn titleprint(heading: &str) {
     println!("{}", heading.to_uppercase());
     println!("{}", "-".repeat(heading.len()));
-}
-pub fn is_open(client: &TDAClient, market: &str) -> bool{
-    let markethours: serde_json::Value = client.get_todays_market_hours(market);
-    chrono::FixedOffset::west(0);
-    return false;
-}
-fn get_eastern_time(){
-    //chrono::FixedOffset::west(5 * 3600).
 }

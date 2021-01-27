@@ -1,7 +1,7 @@
 use std::env;
-use std::cmp;
 use grogu::*;
-use chrono::{TimeZone, Utc};
+mod market_hours;
+
 use tdameritradeclient::{TDAClient, OptionChain, auth::TDauth};
 
 
@@ -16,4 +16,5 @@ fn main() {
     let watchlists: serde_json::Value = client.get_watchlists(accountid);
     prettyprint(&watchlists);
     prettyprint(&client.get_todays_market_hours("OPTION"));
+    market_hours::is_market_open(&client, "OPTION");
 }
