@@ -1,6 +1,7 @@
 
 use tdameritradeclient::{TDAClient,OptionChain};
 pub mod market_hours;
+pub mod watchlist;
 fn get_keys(response: &serde_json::Value, firstkey: &str, mut keysvec: Vec<(String, String)>) -> Vec<(String, String)>{ /*Gets unknown keys from down the hierarchy of the response json value*/
     //use the first key ie; "putExpDateMap" to get the jsonValue down one level
     let incomingjsonvalue: &serde_json::Value = &response.get(firstkey).unwrap();
