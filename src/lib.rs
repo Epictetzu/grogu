@@ -2,6 +2,11 @@
 use tdameritradeclient::{TDAClient,OptionChain};
 pub mod market_hours;
 pub mod watchlist;
+pub mod tokens;
+
+ 
+//
+//Get the unkown keys for dates and strike prices from a options chain response. 
 fn get_keys(response: &serde_json::Value, firstkey: &str, mut keysvec: Vec<(String, String)>) -> Vec<(String, String)>{ /*Gets unknown keys from down the hierarchy of the response json value*/
     //use the first key ie; "putExpDateMap" to get the jsonValue down one level
     let incomingjsonvalue: &serde_json::Value = &response.get(firstkey).unwrap();
@@ -22,6 +27,8 @@ fn get_keys(response: &serde_json::Value, firstkey: &str, mut keysvec: Vec<(Stri
            
     return keysvec;
 }
+//
+//Appends the delta for each option into its keys tuple //TODO: Change this to modify in place rather than moving or copying
 fn append_delta(response: &serde_json::Value, firstkey: &str, keysvec: Vec<(String, String)>) -> Vec<(String, String, f64)>{
     let (datekey, strikekey): (String, String) = keysvec[0].clone();//Get Keys tuple out
     println!("append_delta debug\n {:?}{:?}", datekey, strikekey);
@@ -30,6 +37,8 @@ fn append_delta(response: &serde_json::Value, firstkey: &str, keysvec: Vec<(Stri
     
     return keysvec;
 }
+//
+//Gathers PUT or CALL options for given dates then returns the json value for the option closest to the desired delta.
 pub fn get_option_by_delta(client: &TDAClient, symbol: &str, strikes: u8, callput: &str, interval: f64, fromdate: &str, todate: &str, targetdelta: f64)-> serde_json::Value{
     let jsonoptionchain: &serde_json::Value = &client.getoptionchain(
     &[
@@ -52,8 +61,11 @@ pub fn get_option_by_delta(client: &TDAClient, symbol: &str, strikes: u8, callpu
     
     return jsonoptionchain[firstkey][&keysdeltadiffvec[0].0][&keysdeltadiffvec[0].1].clone();//Use all the painstakingly gathered and sorted keys to get the closest matching option and send it on its way
 }
-fn append_deltas_difference(keysvec: Vec<(String, String, f64)>, targetdelta: f64) -> Vec<(String, String, f64, f64)>{ //TODO
-    // Append to the vector the difference between the target delta and current option's delta
+//
+//TODO: Change this to modify in place(&mut ref) rather than moving or copying
+//Append to each tuple in the vector the difference between the target delta and each option's delta 
+fn append_deltas_difference(keysvec: Vec<(String, String, f64)>, targetdelta: f64) -> Vec<(String, String, f64, f64)>{ 
+    // Append to each tuple in the vector the difference between the target delta and each option's delta
     let keysdeltadiffvec: Vec<(String, String, f64, f64)> = keysvec.iter().map(|(x,y,z)|{
         if targetdelta < *z {(x.clone(),y.clone(),z.clone(), targetdelta % z)} else {(x.clone(),y.clone(),z.clone(), z % targetdelta)}}).collect();
     return keysdeltadiffvec;       
@@ -70,10 +82,16 @@ pub fn gather_options(client: &TDAClient, symbol: &str, strikes: u8, callput: &s
         OptionChain::ToDate(todate),
     ]));
 }
+//Function for printing json values
 pub fn prettyprint(toprint: &serde_json::Value) {    
     println!("{}\n", serde_json::to_string_pretty(toprint).unwrap());
 }
 pub fn titleprint(heading: &str) {
     println!("{}", heading.to_uppercase());
     println!("{}", "-".repeat(heading.len()));
+}
+//
+//Get accountid from user principals json
+pub fn get_accountid(userprincipals: &serde_json::Value) -> &str{
+    userprincipals["primaryAccountId"].as_str().unwrap()
 }

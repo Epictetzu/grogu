@@ -1,0 +1,46 @@
+{
+  "accessLevel": "CUS",
+  "accounts": [
+    {
+      "accountCdDomainId": "A000000082515883",
+      "accountId": "270679054",
+      "acl": "BPDRDTDWESF7G1G3G5G7GKGLH1H3H5LTM1MAOCPNQSRFSDTETFTOTTUAURXBXNXO",
+      "authorizations": {
+        "advancedMargin": true,
+        "apex": false,
+        "levelTwoQuotes": false,
+        "marginTrading": true,
+        "optionTradingLevel": "COVERED",
+        "scottradeAccount": false,
+        "stockTrading": true,
+        "streamerAccess": true,
+        "streamingNews": false
+      },
+      "company": "AMER",
+      "displayName": "epictetzu",
+      "segment": "AMER"
+    }
+  ],
+  "exchangeAgreements": {
+    "NASDAQ_EXCHANGE_AGREEMENT": "ACCEPTED",
+    "NYSE_EXCHANGE_AGREEMENT": "ACCEPTED",
+    "OPRA_EXCHANGE_AGREEMENT": "ACCEPTED"
+  },
+  "lastLoginTime": "2021-02-03T23:23:34+0000",
+  "loginTime": "2021-02-03T23:23:59+0000",
+  "primaryAccountId": "270679054",
+  "professionalStatus": "NON_PROFESSIONAL",
+  "quotes": {
+    "isAmexDelayed": false,
+    "isCmeDelayed": true,
+    "isForexDelayed": true,
+    "isIceDelayed": true,
+    "isNasdaqDelayed": false,
+    "isNyseDelayed": false,
+    "isOpraDelayed": false
+  },
+  "stalePassword": false,
+  "tokenExpirationTime": "2021-02-03T23:53:59+0000",
+  "userCdDomainId": "A000000082515884",
+  "userId": "epictetzu"
+}
